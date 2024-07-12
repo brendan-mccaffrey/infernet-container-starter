@@ -8,6 +8,9 @@ train the model. Refer to: (TODO brendan's code)
 
 
 class LSTM(nn.Module):
+
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
     def __init__(self, input_size, hidden_size, num_stacked_layers):
         super().__init__()
         self.hidden_size = hidden_size
@@ -22,10 +25,10 @@ class LSTM(nn.Module):
     def forward(self, x):
         batch_size = x.size(0)
         h0 = torch.zeros(self.num_stacked_layers, batch_size, self.hidden_size).to(
-            device
+            self.device
         )
         c0 = torch.zeros(self.num_stacked_layers, batch_size, self.hidden_size).to(
-            device
+            self.device
         )
 
         out, _ = self.lstm(x, (h0, c0))
